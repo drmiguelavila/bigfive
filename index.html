@@ -15,9 +15,11 @@
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;overflow:hidden}
 
-#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--purple);width:0%;transition:width 0.4s ease;z-index:100}
+#progress-track{position:fixed;top:0;left:0;right:0;height:3px;background:var(--surface);z-index:101}
+#progress-bar{position:fixed;top:0;left:0;height:3px;background:var(--purple);width:0%;transition:width 0.4s ease;z-index:102;box-shadow:0 0 12px var(--purple)}
 
-#header{position:fixed;top:0;left:0;right:0;padding:26px 48px;display:flex;align-items:center;justify-content:space-between;z-index:50}
+#header{position:fixed;top:3px;left:0;right:0;padding:22px 48px;display:flex;align-items:center;justify-content:space-between;z-index:50}
+#logo{height:36px;width:auto;display:block}
 #brand{font-size:11px;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
 #counter{font-size:11px;color:var(--purple-soft);letter-spacing:0.08em;font-weight:500;opacity:0;transition:opacity 0.4s}
 
@@ -99,6 +101,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
 .btn-share:hover{opacity:0.82}
 .btn-copy{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);font-family:inherit;font-size:11px;font-weight:400;letter-spacing:0.06em;padding:11px 22px;border:1px solid var(--border);cursor:pointer;border-radius:1px;transition:color 0.2s,border-color 0.2s}
 .btn-copy:hover{color:var(--text);border-color:var(--purple-soft)}
+.btn-home{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--muted);font-family:inherit;font-size:11px;font-weight:400;letter-spacing:0.06em;padding:11px 22px;border:1px solid var(--border);cursor:pointer;border-radius:1px;transition:color 0.2s,border-color 0.2s;text-decoration:none}
+.btn-home:hover{color:var(--text);border-color:var(--purple-soft)}
 #copy-feedback{font-size:11px;color:var(--purple-soft);opacity:0;transition:opacity 0.3s;align-self:center}
 
 .reveal{opacity:0;transform:translateY(14px);transition:opacity 0.6s ease,transform 0.6s ease}
@@ -114,15 +118,113 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
   .overview-label{font-size:8.5px}
   .facet-bars{height:90px}
   .facet-label{font-size:8px}
-  .share-actions{flex-direction:column}
+  .share-actions{flex-direction:column;align-items:stretch}
+  .btn-share,.btn-copy,.btn-home{justify-content:center}
+  #logo{height:30px}
 }
 </style>
 </head>
 <body>
 
+<div id="progress-track"></div>
 <div id="progress-bar"></div>
 <div id="header">
-  <span id="brand">Miguel Ávila · Big Five</span>
+  <img id="logo" src="data:image/jpeg;base64,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" alt="Miguel Ávila">
   <span id="counter"></span>
 </div>
 
@@ -172,6 +274,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Inter'
           <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM4 6.5c0-1.38 1.12-2.5 2.5-2.5S9 5.12 9 6.5 7.88 9 6.5 9a2.49 2.49 0 01-1.6-.58L3.5 9l.58-1.4A2.49 2.49 0 014 6.5z" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
           WhatsApp
         </button>
+        <a href="https://drmiguelavila.com" class="btn-home">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M1.5 6.5L6.5 2l5 4.5M3 5.5v5.5h7V5.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Volver a drmiguelavila.com
+        </a>
         <span id="copy-feedback">¡Enlace copiado!</span>
       </div>
     </div>
